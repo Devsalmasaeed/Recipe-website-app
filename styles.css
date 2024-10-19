@@ -80,3 +80,14 @@ img {
 .meal-video-link:hover {
     background-color: #ff6b81;
 }
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+    .meal-list {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+    .meal-list {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+}
