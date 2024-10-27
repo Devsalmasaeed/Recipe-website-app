@@ -3,9 +3,15 @@ const fetchMeals = async () => {
     try {
         const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=chicken');
         const data = await response.json();
-        displayMeals(data.meals);
+        
+        if (data.meals) {
+            displayMeals(data.meals);
+        } else {
+            document.getElementById('meal-list').innerHTML = '<p>No meals found.</p>';
+        }
     } catch (error) {
         console.error('Error fetching meal data:', error);
+        document.getElementById('meal-list').innerHTML = '<p>Failed to fetch meal data. Please try again later.</p>';
     }
 }
 
@@ -21,9 +27,9 @@ const displayMeals = (meals) => {
         mealCard.classList.add('meal-card');
 
         mealCard.innerHTML = `
-            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" loading="lazy">
             <h2 class="meal-title">${meal.strMeal}</h2>
-            <p class="meal-description">${meal.strInstructions.substring(0, 150)}...</p>
+            <p class="meal-description">${meal.strInstructions.substring(0, 200)}...</p>
             <ul class="meal-ingredients">
                 ${ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
             </ul>
@@ -37,13 +43,15 @@ const displayMeals = (meals) => {
 
 const getIngredients = (meal) => {
     let ingredients = [];
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 6; i++) {
         if (meal[`strIngredient${i}`]) {
             ingredients.push(`${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`);
         }
+        
     }
     return ingredients;
 }
+
 
 
 fetchMeals();
